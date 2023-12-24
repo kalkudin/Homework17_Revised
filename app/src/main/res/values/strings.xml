@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Homework 17 Revised 2</string>
+    <string name="log_in">login\n</string>
+    <string name="email">email\n</string>
+    <string name="password">password\n</string>
+    <string name="remember_me">remember me\n</string>
+    <string name="register_here">register here\n</string>
+    <string name="register">register\n</string>
+    <string name="repeat_password">repeat password</string>
+</resources>
