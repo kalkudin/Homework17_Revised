@@ -3,18 +3,15 @@ package com.example.homework17revised2.presentation.login
 import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import com.example.homework17revised2.R
 import com.example.homework17revised2.common.BaseFragment
-import com.example.homework17revised2.common.Resource
+import com.example.homework17revised2.data.resource.Resource
 import com.example.homework17revised2.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import retrofit2.Response
 
 
 @AndroidEntryPoint
@@ -23,6 +20,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private val loginViewModel: LoginViewModel by viewModels()
 
     override fun bind() {
+
     }
 
     override fun bindViewActionListeners() {
@@ -31,6 +29,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 val email = binding.etEmail.text.toString()
                 val password = binding.etPassword.text.toString()
                 val loginEvent: LoginEvent = LoginEvent.Login(email = email, password = password)
+
+                if(btnRememberMe.isChecked){
+                    loginViewModel.onEvent(LoginEvent.LoginWithRememberMe(email = email, password = password))
+                    return@setOnClickListener
+
+                }
                 loginViewModel.onEvent(loginEvent)
             }
 
@@ -57,8 +61,8 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 loginViewModel.navigationFlow.collect { event ->
                     when(event){
-                        is NavigationEvent.NavigateToHome -> navigateToHome()
-                        is NavigationEvent.NavigateToRegister -> navigateToRegister()
+                        is LoginNavigationEvent.NavigateToHome -> navigateToHome()
+                        is LoginNavigationEvent.NavigateToRegister -> navigateToRegister()
                     }
                 }
             }

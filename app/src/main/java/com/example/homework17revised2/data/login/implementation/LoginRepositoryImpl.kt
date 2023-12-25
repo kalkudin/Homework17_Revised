@@ -1,12 +1,11 @@
-package com.example.homework17revised2.data.implementation
+package com.example.homework17revised2.data.login.implementation
 
 import android.net.http.HttpException
-import android.util.Log.d
-import com.example.homework17revised2.common.Resource
-import com.example.homework17revised2.data.dto.LoginErrorResponseDto
-import com.example.homework17revised2.data.dto.toDomain
-import com.example.homework17revised2.data.dto.toDto
-import com.example.homework17revised2.data.service.LoginService
+import com.example.homework17revised2.data.resource.Resource
+import com.example.homework17revised2.data.login.dto.LoginErrorResponseDto
+import com.example.homework17revised2.data.login.mapper.toDomain
+import com.example.homework17revised2.data.login.mapper.toDto
+import com.example.homework17revised2.data.login.service.LoginService
 import com.example.homework17revised2.domain.login.LoginRepository
 import com.example.homework17revised2.domain.login.LoginRequest
 import com.example.homework17revised2.domain.login.LoginResponse
@@ -15,7 +14,6 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import okhttp3.ResponseBody
 import java.io.IOException
 import java.lang.Exception
 import javax.inject.Inject
