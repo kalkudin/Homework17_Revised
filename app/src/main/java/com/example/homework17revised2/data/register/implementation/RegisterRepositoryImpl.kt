@@ -1,14 +1,17 @@
-package com.example.homework17revised2.data.login.implementation
+package com.example.homework17revised2.data.register.implementation
 
 import android.net.http.HttpException
-import com.example.homework17revised2.data.resource.Resource
 import com.example.homework17revised2.data.login.dto.LoginErrorResponseDto
 import com.example.homework17revised2.data.login.mapper.toDomain
 import com.example.homework17revised2.data.login.mapper.toDto
-import com.example.homework17revised2.data.login.service.LoginService
-import com.example.homework17revised2.domain.login.LoginRepository
-import com.example.homework17revised2.domain.login.model.LoginRequest
-import com.example.homework17revised2.domain.login.model.LoginResponse
+import com.example.homework17revised2.data.register.dto.RegisterErrorResponseDto
+import com.example.homework17revised2.data.register.mapper.toDomain
+import com.example.homework17revised2.data.register.mapper.toDto
+import com.example.homework17revised2.data.register.service.RegisterService
+import com.example.homework17revised2.data.resource.Resource
+import com.example.homework17revised2.domain.register.RegisterRepository
+import com.example.homework17revised2.domain.register.model.RegisterRequest
+import com.example.homework17revised2.domain.register.model.RegisterResponse
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -18,10 +21,10 @@ import java.io.IOException
 import java.lang.Exception
 import javax.inject.Inject
 
-class LoginRepositoryImpl @Inject constructor(val loginService: LoginService) : LoginRepository {
-    override suspend fun login(loginRequest: LoginRequest): Flow<Resource<LoginResponse>> {
-        return flow {
-            val response = loginService.login(loginRequest.toDto())
+class RegisterRepositoryImpl @Inject constructor(val registerService : RegisterService) : RegisterRepository {
+    override suspend fun register(registerRequest: RegisterRequest): Flow<Resource<RegisterResponse>> {
+        return flow{
+            val response = registerService.register(registerRequest.toDto())
             try {
                 if (response.isSuccessful) {
                     emit(Resource.Success(data = response.body()!!.toDomain()))
@@ -33,24 +36,24 @@ class LoginRepositoryImpl @Inject constructor(val loginService: LoginService) : 
                     emit(Resource.Error(errorMessage = errorMessage))
                 }
             }
-            catch (e:IOException){
+            catch (e: IOException){
                 emit(Resource.Error(errorMessage = e.message ?: "Something went wrong"))
             }
-            catch (e:HttpException){
+            catch (e: HttpException){
                 emit(Resource.Error(errorMessage = e.message ?: "Please check your network connection"))
             }
-            catch (e:Exception){
+            catch (e: Exception){
                 emit(Resource.Error(errorMessage = "Something went wrong"))
             }
         }
     }
 
-    private fun parseErrorBody(errorBody: String): LoginErrorResponseDto? {
+    private fun parseErrorBody(errorBody: String): RegisterErrorResponseDto? {
         val moshi = Moshi.Builder()
             .addLast(KotlinJsonAdapterFactory())
             .build()
 
-        val errorAdapter: JsonAdapter<LoginErrorResponseDto> = moshi.adapter(LoginErrorResponseDto::class.java)
+        val errorAdapter: JsonAdapter<RegisterErrorResponseDto> = moshi.adapter(RegisterErrorResponseDto::class.java)
 
         return try {
             errorAdapter.fromJson(errorBody)
@@ -58,4 +61,5 @@ class LoginRepositoryImpl @Inject constructor(val loginService: LoginService) : 
             null
         }
     }
+
 }

@@ -54,7 +54,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun displayToken(){
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                homeViewModel.userName.collect(){
+                homeViewModel.userToken.collect(){
                     binding.tvToken.text = it
                 }
             }

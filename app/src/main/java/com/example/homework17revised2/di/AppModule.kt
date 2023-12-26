@@ -1,6 +1,7 @@
 package com.example.homework17revised2.di
 
 import com.example.homework17revised2.data.login.service.LoginService
+import com.example.homework17revised2.data.register.service.RegisterService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import dagger.Module
@@ -38,4 +39,9 @@ object AppModule {
         return retrofit.create(LoginService::class.java)
     }
 
+    @Singleton
+    @Provides
+    fun provideRegisterService(retrofit : Retrofit) : RegisterService {
+        return retrofit.create(RegisterService::class.java)
+    }
 }

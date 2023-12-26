@@ -20,7 +20,7 @@ class HomeFragmentViewModel @Inject constructor(private val userDataStoreReposit
     private val _homeFragmentFlow = MutableSharedFlow<HomeNavigationEvent>()
     val homeFragmentFlow: SharedFlow<HomeNavigationEvent> = _homeFragmentFlow.asSharedFlow()
 
-    var userName: StateFlow<String?> = userDataStoreRepository.readEmail()
+    var userToken: StateFlow<String?> = userDataStoreRepository.readToken()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = " ")
     var userEmail: StateFlow<String?> = userDataStoreRepository.readEmail()
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = " ")

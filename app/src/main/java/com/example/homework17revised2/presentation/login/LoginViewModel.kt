@@ -1,12 +1,13 @@
 package com.example.homework17revised2.presentation.login
 
+import android.util.Log.d
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.homework17revised2.data.resource.Resource
 import com.example.homework17revised2.domain.datastore.UserDataStoreRepository
 import com.example.homework17revised2.domain.login.LoginRepository
-import com.example.homework17revised2.domain.login.LoginRequest
-import com.example.homework17revised2.domain.login.LoginResponse
+import com.example.homework17revised2.domain.login.model.LoginRequest
+import com.example.homework17revised2.domain.login.model.LoginResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -77,8 +78,8 @@ class LoginViewModel @Inject constructor(
 
     suspend fun isSessionSaved(){
         viewModelScope.launch {
-            val userToken = userDataStoreRepository.readToken().firstOrNull() ?: ""
-            if (userToken.isNotBlank()){
+            if ((userDataStoreRepository.readToken().firstOrNull() ?: "").isNotBlank()){
+                d("LoginViewModel", "checked session")
                 _navigationFlow.emit(LoginNavigationEvent.NavigateToHome)
             }
         }
