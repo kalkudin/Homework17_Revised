@@ -20,7 +20,11 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private val loginViewModel: LoginViewModel by viewModels()
 
     override fun bind() {
-
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                loginViewModel.isSessionSaved()
+            }
+        }
     }
 
     override fun bindViewActionListeners() {

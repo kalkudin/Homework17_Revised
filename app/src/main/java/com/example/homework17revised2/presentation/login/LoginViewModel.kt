@@ -11,6 +11,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -71,6 +72,15 @@ class LoginViewModel @Inject constructor(
     private fun register() {
         viewModelScope.launch {
             _navigationFlow.emit(LoginNavigationEvent.NavigateToRegister)
+        }
+    }
+
+    suspend fun isSessionSaved(){
+        viewModelScope.launch {
+            val userToken = userDataStoreRepository.readToken().firstOrNull() ?: ""
+            if (userToken.isNotBlank()){
+                _navigationFlow.emit(LoginNavigationEvent.NavigateToHome)
+            }
         }
     }
 }
