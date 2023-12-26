@@ -1,6 +1,8 @@
 package com.example.homework17revised2.presentation.register
 
 import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +12,7 @@ import com.example.homework17revised2.R
 import com.example.homework17revised2.common.BaseFragment
 import com.example.homework17revised2.data.resource.Resource
 import com.example.homework17revised2.databinding.FragmentRegisterBinding
+import com.example.homework17revised2.presentation.common.TransferData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -54,7 +57,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 registerViewModel.navigationFlow.collect(){ navigationEvent ->
                     when(navigationEvent){
-                        is RegisterNavigationEvent.NavigateToLogin -> navigateToLogin()
+                        is RegisterNavigationEvent.NavigateToLogin -> {
+                            transferData()
+                            navigateToLogin()
+                        }
                         else -> {
 
                         }
@@ -66,5 +72,9 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
     private fun navigateToLogin(){
         findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+    }
+
+    private fun transferData(){
+        setFragmentResult("REGISTER_SUCCESS", bundleOf("transferData" to TransferData(binding.etEmail.text.toString(), binding.etPassword.text.toString())))
     }
 }

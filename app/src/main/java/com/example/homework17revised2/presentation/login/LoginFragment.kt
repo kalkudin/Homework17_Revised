@@ -1,6 +1,7 @@
 package com.example.homework17revised2.presentation.login
 
 import android.widget.Toast
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -10,6 +11,7 @@ import com.example.homework17revised2.R
 import com.example.homework17revised2.common.BaseFragment
 import com.example.homework17revised2.data.resource.Resource
 import com.example.homework17revised2.databinding.FragmentLoginBinding
+import com.example.homework17revised2.presentation.common.TransferData
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
@@ -24,6 +26,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             repeatOnLifecycle(Lifecycle.State.STARTED){
                 loginViewModel.isSessionSaved()
             }
+        }
+
+        setFragmentResultListener("REGISTER_SUCCESS") { _, bundle ->
+            val transferData = bundle.getParcelable("transferData", TransferData::class.java)!!
+                binding.etEmail.setText(transferData.email)
+                binding.etPassword.setText(transferData.password)
         }
     }
 
